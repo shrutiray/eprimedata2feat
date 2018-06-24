@@ -275,16 +275,26 @@ def feat_creation(csvpath,f1):
                 if run_count==1:
                     face_accuracy_p1=round((float(acc_c_face)/f_c)*100,3)                                    
                     shape_accuracy_p1=round((float(acc_c_shape)/s_c)*100,3)
+            ####overall accuracy####
+                    total_shape_face_p1=f_c+s_c
+                    total_acc_p1=acc_c_face+acc_c_shape
+                    overall_acc_p1=round((float(total_acc_p1)/total_shape_face_p1)*100,3)
+            ########################
                     face_rt_avg1=round((float(f_rt)/f_c),3)
                     shape_rt_avg1=round((float(s_rt)/s_c),3)
                     
                 else:
                     face_accuracy_p2=round((float(acc_c_face)/f_c)*100,3)
                     shape_accuracy_p2=round((float(acc_c_shape)/s_c)*100,3)
+            ####overall accuracy####
+                    total_shape_face_p2=f_c+s_c
+                    total_acc_p2=acc_c_face+acc_c_shape
+                    overall_acc_p2=round((float(total_acc_p2)/total_shape_face_p2)*100,3)
+            ########################
                     face_rt_avg2=round((float(f_rt)/f_c),3)
                     shape_rt_avg2=round((float(s_rt)/s_c),3)
                     
-                    acc_f.write(f1 + "\t" + str('{:.3f}'.format(face_rt_avg1)) + " " + str('{:.3f}'.format(shape_rt_avg1)) + "   " + str('{:.3f}'.format(face_rt_avg2)) + " " + str('{:.3f}'.format(shape_rt_avg2)) + " \t \t" + str('{:.3f}'.format(face_accuracy_p1)) + " " + str('{:.3f}'.format(shape_accuracy_p1)) + "     " + str('{:.3f}'.format(face_accuracy_p2)) + " " + str('{:.3f}'.format(shape_accuracy_p2))+"\n")       
+                    acc_f.write(f1 + "\t" + str('{:.3f}'.format(face_rt_avg1)) + "\t" + str('{:.3f}'.format(shape_rt_avg1)) + "\t" + str('{:.3f}'.format(face_rt_avg2)) + "\t" + str('{:.3f}'.format(shape_rt_avg2)) + " \t \t" + str('{:.3f}'.format(face_accuracy_p1)) + "\t" + str('{:.3f}'.format(shape_accuracy_p1)) + "\t" + str('{:.3f}'.format(face_accuracy_p2)) + "\t" + str('{:.3f}'.format(shape_accuracy_p2))+ "\t \t" + str('{:.3f}'.format(overall_acc_p1)) + "\t " + str('{:.3f}'.format(overall_acc_p2))+"\n")       
             
             acc_f.close()
             os.remove(csvpath+"/"+f1+"/eprime_csvfiles/csvfilelist.txt")
@@ -305,9 +315,9 @@ if args.subjectID:
     path=os.getcwd()
     if os.path.isfile(path+"/"+"subj_acc.txt")!=True:        
         acc_f=open(path+"/"+"subj_acc.txt","a")
-        acc_f.write(" SubjectID \t \t  Reaction Time \t " + "\t " +  " \t \t % Accuracy \n")
-        acc_f.write("           \t    Run 1 \t \t Run 2" + "\t \t" + "\t    Run 1 \t            Run 2 \n")
-        acc_f.write("           \t   Face Shape  " + " Face Shape \t \t Face Shape           Face Shape \n")
+        acc_f.write("SubjectID \t Reaction_Time " + " \t \t \t \t \t %_Accuracy" +  "\t \t \t \t %_Overall Accuracy \n")
+        acc_f.write("\t Run_1 \t \t Run_2" + "\t \t \t Run_1 \t \t Run_2 \n")
+        acc_f.write("\t Face \t Shape  " + " \t Face \t Shape \t \t Face \t Shape \t Face \t Shape "+ "\t \t Run_1 \t Run_2 \n")
         acc_f.close()      
     csvpath=head
     direc=head
@@ -320,9 +330,9 @@ else:
     csvpath=direc
     if os.path.isfile(path+"/"+"subj_acc.txt")!=True:        
         acc_f=open(path+"/"+"subj_acc.txt","a")
-        acc_f.write(" SubjectID \t \t  Reaction Time \t " + "\t " +  " \t \t % Accuracy \n")
-        acc_f.write("           \t    Run 1 \t \t Run 2" + "\t \t" + "\t    Run 1 \t          Run 2 \n")
-        acc_f.write("           \t   Face Shape  " + " Face Shape \t \t Face Shape         Face Shape \n")
+        acc_f.write("SubjectID \t Reaction_Time \t " +  "\t \t \t \t %_Accuracy" +  " \t \t \t \t \t %_Overall Accuracy \n")
+        acc_f.write("\t Run_1 \t \t Run_2" + "\t  \t \t Run_1 \t \t Run_2 \n")
+        acc_f.write(" \t Face \t Shape " + " \t Face \t Shape \t \t Face \t Shape \t Face \t Shape "+ "\t \t Run_1 \t Run_2 \n")
         acc_f.close()             
     for f1 in open(csvpath+"/sub_list.txt"):
         f1=f1.strip("\n")

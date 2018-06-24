@@ -50,7 +50,8 @@ def extension_tsv(csvpath,f,newpath):
 #Returns dataframe with columns required      
 def csv_df(f2):
     f2=f2.strip("\n")
-    df = pd.read_csv(f2, usecols=['SyncSlide.OnsetTime','Procedure','ExperimenterWindow.OnsetTime','StimSlide.OnsetToOnsetTime','StimSlide.OnsetTime','StimSlide.RESP','StimSlide.ACC','StimSlide.CRESP','StimSlide.RT'])    
+    ####### Can be modified according to the columns to be used for your task ##################################
+    df = pd.read_csv(f2, usecols=['SyncSlide.OnsetTime','Procedure','ExperimenterWindow.OnsetTime','StimSlide.OnsetToOnsetTime','StimSlide.OnsetTime','StimSlide.RESP','StimSlide.ACC','StimSlide.CRESP','StimSlide.RT'])     
     csv1=f2.strip(".csv")
     head,tail=os.path.split(csv1)
     ref_p=df.loc[0,"SyncSlide.OnsetTime"]/1000
@@ -155,10 +156,11 @@ if options.subID:
                 tail2=tail1[:-6]
                 name=tail2.lstrip("sub-")
                 
-                if not os.path.exists(newpath+"/"+ "sub-"+ name +"/func"):
-                    os.makedirs(newpath+"/"+ "sub-"+ name +"/func")
+                if not os.path.exists(newpath+"/"+ "sub-"+ name +"/func"): ##### Modify with required naming convention ###################
+                    os.makedirs(newpath+"/"+ "sub-"+ name +"/func") ##### Modify with required naming convention ###################
                 
                 print df.to_csv(newpath+"/"+"sub-"+ name+'/func/sub-'+name+'_task-faces_run-0'+str(num)+'_events.tsv',header=True, sep='\t',mode='w',index=False)
+                ##### Modify with required naming convention ###################
             os.remove(csvpath+"/"+f+"/eprime_csvfiles/csv_list.txt")
         except IOError:
             print IOError
@@ -166,7 +168,7 @@ if options.subID:
         print IOError
 
 else:
-    cmd="ls "+csvpath+" | grep sub- > " + csvpath+ "/sub_list.txt"
+    cmd="ls "+csvpath+" | grep sub- > " + csvpath+ "/sub_list.txt" ##### Modify with required naming convention ###################
     os.system(cmd)
    
     for f in open(csvpath+"/sub_list.txt",'r'):    
@@ -181,9 +183,10 @@ else:
                 tail1=tail[:-6]
                 name=tail1.lstrip("sub-")
                                        
-                if not os.path.exists(newpath+"/"+ "sub-"+ name +"/func"):
-                    os.makedirs(newpath+"/"+ "sub-"+ name +"/func")
+                if not os.path.exists(newpath+"/"+ "sub-"+ name +"/func"): ##### Modify with required naming convention ###################
+                    os.makedirs(newpath+"/"+ "sub-"+ name +"/func") ##### Modify with required naming convention ###################
                 print df.to_csv(newpath+"/"+"sub-"+ name+'/func/sub-'+name+'_task-faces_run-0'+str(num)+'_events.tsv',header=True, sep='\t',mode='w',index=False)
+                ##### Modify with required naming convention ###################
             os.remove(csvpath+"/"+f+"/eprime_csvfiles/csv_list.txt")
         except IOError:
             print IOError 

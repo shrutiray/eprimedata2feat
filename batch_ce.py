@@ -42,59 +42,58 @@ if args.subjectID:
     ID_num=tail.lstrip('sub-')
     if head=='':
         path=os.getcwd()
-        face1=ID_num+"_face1_EMOTION_run1.txt"########### Modify according to file naming convention of choice ########################
-        face2=ID_num+"_face2_EMOTION_run1.txt"########### Modify according to file naming convention of choice ########################
+        eprime="ls "+os.path.join(path,"sub-"+ID_num,"originals")+ " | grep ePrimeData"
+        eprimedata=os.popen(eprime).read().strip("\n")
+        eprime_output="ls "+os.path.join(path,"sub-"+ID_num,"originals",eprimedata)
+        e_output=os.popen(eprime_output).readlines()
+        face1=e_output[0].strip("\n")
+        face2=e_output[1].strip("\n")
     else:
         path=head
-        face1=ID_num+"_face1_EMOTION_run1.txt"########### Modify according to file naming convention of choice ########################
-        face2=ID_num+"_face2_EMOTION_run1.txt"########### Modify according to file naming convention of choice ########################
+        eprime="ls "+os.path.join(path,"sub-"+ID_num,"originals")+ " | grep ePrimeData"
+        eprimedata=os.popen(eprime).read().strip("\n")
+        eprime_output="ls "+os.path.join(path,"sub-"+ID_num,"originals",eprimedata)
+        e_output=os.popen(eprime_output).readlines()
+        face1=e_output[0].strip("\n")
+        face2=e_output[1].strip("\n")
 
-    txtfilename1=path+'/sub-'+ID_num+'/originals/ePrimeData/'+face1######## Subject folders must start with a sub- , can modify !!! ####################
-    txtfilename2=path+'/sub-'+ID_num+'/originals/ePrimeData/'+face2######## Subject folders must start with a sub- , can modify !!! ####################
+    txtfilename1=os.path.join(path,'sub-'+ID_num,'originals',eprimedata,face1)
+    txtfilename2=os.path.join(path,'sub-'+ID_num,'originals',eprimedata,face2)
     
     fname1,ext1=os.path.splitext(face1)
     fname2,ext2=os.path.splitext(face2)
 
-    fname1_2=fname1[:-13] ######## Can modify according to naming convention of .txt file !!! ####################
-    fname2_2=fname2[:-13] ######## Can modify according to naming convention of .txt file !!! ####################
+    fname1_2=fname1[:-13]
+    fname2_2=fname2[:-13]
            
-    if not os.path.exists(path+"/sub-"+ID_num+"/eprime_csvfiles"): ######## Subject folders must start with a sub- , can modify !!! ####################
-        os.makedirs(path+"/sub-"+ID_num+"/eprime_csvfiles") ######## Subject folders must start with a sub- , can modify !!! ####################
+    if not os.path.exists(os.path.join(path,'sub-'+ID_num,'eprime_csvfiles')):
+        os.makedirs(os.path.join(path,'sub-'+ID_num,'eprime_csvfiles'))
 
-    out_file1=path+"/sub-"+ID_num+"/eprime_csvfiles/"+fname1_2+'.csv' ######## Subject folders must start with a sub- , can modify !!! ####################
-    out_file2=path+"/sub-"+ID_num+"/eprime_csvfiles/"+fname2_2+'.csv' ######## Subject folders must start with a sub- , can modify !!! ####################
-
+    out_file1=os.path.join(path,'sub-'+ID_num,'eprime_csvfiles',fname1_2+'.csv')
+    out_file2=os.path.join(path,'sub-'+ID_num,'eprime_csvfiles',fname2_2+'.csv')
     ce.text_to_csv(txtfilename1, out_file1)
-    ce.text_to_csv(txtfilename2, out_file2)
-
+    ce.text_to_csv(txtfilename2, out_file2)  
 elif args.path:
     direc=args.path
     path=os.chdir(direc)
-    cmd="ls | grep sub- > eprime_subject_list.txt" ######## Subject folders must start with a sub- , can modify !!! ####################
+    cmd="ls | grep sub- > eprime_subject_list.txt"
     os.system(cmd)
     for f in open("eprime_subject_list.txt"):
         f=f.strip("\n")
-        txtpath=direc+"/"+f+"/originals/ePrimeData"
+        f=f.strip("sub-")
+        eprime="ls "+os.path.join(direc,"sub-"+f,"originals")+ " | grep ePrimeData"
+        eprimedata=os.popen(eprime).read().strip("\n")
+        txtpath=os.path.join(direc,"sub-"+f,'originals',eprimedata)
         os.chdir(txtpath)
-        cmd2="ls | grep run1.txt > eprime_txt_list.txt" ######## Can modify according to naming convention of .txt file !!! ####################
+        cmd2="ls | grep run1.txt > eprime_txt_list.txt"
         os.system(cmd2)
         for f1 in open("eprime_txt_list.txt"):
             f1=f1.strip("\n")
             fname,ext=os.path.splitext(f1)
-            fname_2=fname[:-13] ######## Can modify according to naming convention of .txt file !!! ####################
-            file_name=fname_2[:-6] ######## Can modify according to naming convention of .txt file !!! ####################
-            out_file=direc +"/"+ "sub-"+file_name+"/eprime_csvfiles/sub-"+fname_2+".csv" ######## Subject folders must start with a sub- , can modify !!! ####################
-            txtfile=direc+"/"+f+"/originals/ePrimeData/"+f1
-            if not os.path.exists(direc +"/"+ "sub-"+file_name+"/eprime_csvfiles"): ######## Subject folders must start with a sub- , can modify !!!
-                os.makedirs(direc +"/"+ "sub-"+file_name+"/eprime_csvfiles") ######## Subject folders must start with a sub- , can modify !!!
-            ce.text_to_csv(f1, out_file)
-        
-        
-        
-        
-    
-
-#head1, tail1 =os.path.split(args.txtfilename1)
-#head2, tail2 =os.path.split(args.txtfilename2)
-
-
+            fname_2=fname[:-13]
+            file_name=fname_2[:-6]
+            out_file=os.path.join(direc,'sub-'+file_name.strip("sub-"),'eprime_csvfiles',fname_2+'.csv')
+            txtfile=os.path.join(direc,"sub-"+f,'originals',eprimedata,f1)
+            if not os.path.exists(os.path.join(direc,'sub-'+file_name.strip("sub-"),'eprime_csvfiles')):
+                os.makedirs(os.path.join(direc,"sub-"+file_name.strip("sub-"),"eprime_csvfiles"))
+            ce.text_to_csv(f1, out_file)                            

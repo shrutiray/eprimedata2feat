@@ -313,6 +313,8 @@ if args.subjectID:
             head=os.getcwd()
     os.chdir(newpath)
     path=os.getcwd()
+    path=os.chdir("..")
+    path=os.getcwd()
     if os.path.isfile(path+"/"+"subj_acc.txt")!=True:        
         acc_f=open(path+"/"+"subj_acc.txt","a")
         acc_f.write("SubjectID \t Reaction_Time " + " \t \t \t \t \t %_Accuracy" +  "\t \t \t \t %_Overall Accuracy \n")
@@ -326,7 +328,9 @@ if args.subjectID:
 else:
     #path to participant .csv files
     os.chdir(newpath)
-    path=os.getcwd()    
+    path=os.getcwd()
+    path=os.chdir("..")
+    path=os.getcwd()
     csvpath=direc
     if os.path.isfile(path+"/"+"subj_acc.txt")!=True:        
         acc_f=open(path+"/"+"subj_acc.txt","a")

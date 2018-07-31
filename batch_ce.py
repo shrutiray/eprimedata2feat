@@ -44,7 +44,7 @@ if args.subjectID:
         path=os.getcwd()
         eprime="ls "+os.path.join(path,"sub-"+ID_num,"originals")+ " | grep ePrimeData"
         eprimedata=os.popen(eprime).read().strip("\n")
-        eprime_output="ls "+os.path.join(path,"sub-"+ID_num,"originals",eprimedata)
+        eprime_output="ls "+os.path.join(path,"sub-"+ID_num,"originals",eprimedata)+" | grep run1.txt"
         e_output=os.popen(eprime_output).readlines()
         face1=e_output[0].strip("\n")
         face2=e_output[1].strip("\n")
@@ -52,7 +52,7 @@ if args.subjectID:
         path=head
         eprime="ls "+os.path.join(path,"sub-"+ID_num,"originals")+ " | grep ePrimeData"
         eprimedata=os.popen(eprime).read().strip("\n")
-        eprime_output="ls "+os.path.join(path,"sub-"+ID_num,"originals",eprimedata)
+        eprime_output="ls "+os.path.join(path,"sub-"+ID_num,"originals",eprimedata)+" | grep run1.txt"
         e_output=os.popen(eprime_output).readlines()
         face1=e_output[0].strip("\n")
         face2=e_output[1].strip("\n")
@@ -63,14 +63,14 @@ if args.subjectID:
     fname1,ext1=os.path.splitext(face1)
     fname2,ext2=os.path.splitext(face2)
 
-    fname1_2=fname1[:-13]
-    fname2_2=fname2[:-13]
+    fname1_2=fname1[-18:-13]
+    fname2_2=fname2[-18:-13]
            
     if not os.path.exists(os.path.join(path,'sub-'+ID_num,'eprime_csvfiles')):
         os.makedirs(os.path.join(path,'sub-'+ID_num,'eprime_csvfiles'))
 
-    out_file1=os.path.join(path,'sub-'+ID_num,'eprime_csvfiles',fname1_2+'.csv')
-    out_file2=os.path.join(path,'sub-'+ID_num,'eprime_csvfiles',fname2_2+'.csv')
+    out_file1=os.path.join(path,'sub-'+ID_num,'eprime_csvfiles',"sub-"+ID_num+"_"+fname1_2+'.csv')
+    out_file2=os.path.join(path,'sub-'+ID_num,'eprime_csvfiles',"sub-"+ID_num+"_"+fname2_2+'.csv')
     ce.text_to_csv(txtfilename1, out_file1)
     ce.text_to_csv(txtfilename2, out_file2)  
 elif args.path:
@@ -91,9 +91,9 @@ elif args.path:
             f1=f1.strip("\n")
             fname,ext=os.path.splitext(f1)
             fname_2=fname[:-13]
-            file_name=fname_2[:-6]
-            out_file=os.path.join(direc,'sub-'+file_name.strip("sub-"),'eprime_csvfiles',fname_2+'.csv')
+            file_name=fname_2[-5:]
+            out_file=os.path.join(direc,'sub-'+f,'eprime_csvfiles',"sub-"+f+"_"+file_name+'.csv')
             txtfile=os.path.join(direc,"sub-"+f,'originals',eprimedata,f1)
-            if not os.path.exists(os.path.join(direc,'sub-'+file_name.strip("sub-"),'eprime_csvfiles')):
-                os.makedirs(os.path.join(direc,"sub-"+file_name.strip("sub-"),"eprime_csvfiles"))
+            if not os.path.exists(os.path.join(direc,'sub-'+f,'eprime_csvfiles')):
+                os.makedirs(os.path.join(direc,"sub-"+f,"eprime_csvfiles"))
             ce.text_to_csv(f1, out_file)                            

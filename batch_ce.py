@@ -80,7 +80,7 @@ elif args.path:
     os.system(cmd)
     for f in open("eprime_subject_list.txt"):
         f=f.strip("\n")
-        f=f.strip("sub-")
+        f=f.lstrip("sub-")
         eprime="ls "+os.path.join(direc,"sub-"+f,"originals")+ " | grep ePrimeData"
         eprimedata=os.popen(eprime).read().strip("\n")
         txtpath=os.path.join(direc,"sub-"+f,'originals',eprimedata)
